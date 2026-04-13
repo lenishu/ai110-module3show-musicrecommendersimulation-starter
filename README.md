@@ -411,11 +411,108 @@ Examples:
 
 ---
 
-## 9. Personal Reflection
+## 9. Project Completion & Key Findings
 
-A few sentences about what you learned:
+### What Was Built
+✅ **Complete recommender system** with:
+- 60-song dataset across 5 languages, 15+ genres, 4 eras
+- Weighted scoring algorithm (8 features, max 17.5 points)
+- Two implementations (OOP + functional)
+- 8 test profiles (4 baseline + 4 edge cases for stress testing)
+- Clean CLI output with score breakdowns
 
-- What surprised you about how your system behaved
-- How did building this change how you think about real music recommenders
-- Where do you think human judgment still matters, even if the model seems "smart"
+### Results: System Works Correctly
+
+| Profile | Top Recommendation | Score | Quality |
+|---------|-------------------|-------|---------|
+| chill_lofi | Midnight Coding | 15.87/17.5 | ✅ 90.7% |
+| intense_rock | Storm Runner | 15.93/17.5 | ✅ 91.0% |
+| nepali_pop_happy | Mera Nepalko Haat | 15.93/17.5 | ✅ 91.0% |
+| romantic_rnb | Heartbeat | 15.95/17.5 | ✅ 91.1% |
+
+✅ **Differentiates Between Opposite Tastes:**
+- chill_lofi gets low-energy acoustic lofi (0.40 energy, 0.75 acousticness)
+- intense_rock gets high-energy electric rock (0.92 energy, 0.10 acousticness)
+- **Zero overlap in top recommendations**
+
+### Key Biases Identified
+
+1. **Language Segregation** — Language weighting (+3.0) dominates. A Nepali speaker literally cannot see English songs, even if objectively better. Only 12 non-English songs vs 48 English.
+
+2. **Genre Overrepresentation** — 42% of songs are pop. Pop fans get variety; classical fans get few options.
+
+3. **No Contradiction Handling** — High energy + sad mood (conflicting_preferences) scores only 57% of max (9.91/17.5).
+
+4. **No Diversity Mechanism** — Top 3 for nepali_pop_happy are nearly identical (15.86–15.93), showing 3 of the same thing instead of breadth.
+
+5. **Dataset Limitation** — 60 songs is tiny. Niche tastes (Spanish folk, classical) can't be well-served.
+
+6. **Data Composition Bias** — 80% English, 42% pop. The algorithm is fair, but the dataset is skewed, creating inevitable bias.
+
+### Testing & Validation
+
+**8 profiles tested with detailed results:**
+- 4 baseline: chill_lofi, intense_rock, nepali_pop_happy, romantic_rnb
+- 4 edge cases: conflicting_preferences, niche_acoustic_fast, extreme_electronics, high_energy_sad
+
+**Weight sensitivity confirmed:** Doubling energy weight changes chill_lofi rankings but not intense_rock (language/era bonuses too strong to override).
+
+**Surprising discoveries:**
+- Genre encodes emotional norms (high energy + dark works in hip-hop, not in ambient)
+- Language weight dominates genre match
+- When preferences match available data, system finds perfect matches (90%+ scores)
+
+### What This Reveals About Real Recommenders
+
+1. **Recommendation = weighted voting.** Spotify's neural nets are complex, but the principle is the same: features compete for importance. Visible weights (ours) show the bias; hidden weights (Spotify's) hide it.
+
+2. **Bias comes from data, not algorithms.** Our math is fair. But because the dataset is 80% English + 42% pop, those get favored. Real Spotify would have similar issues if training data is skewed.
+
+3. **Design choices are normative.** Giving language weight 3.0 (same as era) is a *choice*. It reflects philosophy: "Keep users in their language." But it segregates them. A different choice: "suggest best quality regardless of language." No single right answer, but it matters.
+
+4. **Transparency enables accountability.** Users can push back against bad recommendations here because they see reasoning. In real systems, hidden algorithms make that impossible.
+
+### If You Extended This
+
+**Priority next steps:**
+1. Expand dataset to 500+ songs across all genres/languages/eras
+2. Add user feedback loop (track what people actually listen to)
+3. Implement diversity rewards (penalize repetitive recommendations)
+4. Support multi-language preference ("English OR Spanish" instead of one language)
+5. Detect contradictory preferences and explain trade-offs
+6. Test with real users to validate scores correlate with satisfaction
+
+### Personal Reflection
+
+**Biggest Learning:** Recommendations aren't magic—they're *explicit trade-offs* where every weight reflects human assumptions. Language got +3.0, so it dominates and segregates. Genre got +2.5, so it's secondary. These choices make biases *visible* and *questionable*.
+
+**Most Surprising:** How powerfully language weighting dominates (segregates users) and how genre itself encodes emotional norms (high energy + dark works in hip-hop but not ambient).
+
+**How It Changed My Thinking:** I thought recommenders were black boxes. Now I see they're transparent trade-offs. Hidden biases in Spotify/Netflix are scary. Transparent systems let you question the assumptions.
+
+**Key Insight:** AI systems are encoding human choices. Every weight, every feature, every decision reflects an assumption about what matters. Building this transparent system made those assumptions *visible*. Users deserve to know *why* they saw what they saw, so they can push back when something feels wrong.
+
+---
+
+## Model Card
+
+See [**model_card.md**](model_card.md) for the complete industry-standard documentation including:
+- Intended use (educational, not production)
+- How it works (plain language explanation)
+- Data composition (60 songs, language/genre/era breakdown)
+- Strengths (5 documented)
+- Limitations & bias (6 documented with evidence)
+- Evaluation methodology (8 profiles tested)
+- Future work (7 improvement ideas)
+- Detailed personal reflection
+
+---
+
+## 9. Personal Reflection (from Model Card)
+
+See [model_card.md](model_card.md) for detailed reflection on:
+- Biggest learning moment about recommender trade-offs
+- How AI tools helped + when to double-check
+- What surprised about simple algorithms feeling like recommendations
+- Specific next steps if extending the project
 
