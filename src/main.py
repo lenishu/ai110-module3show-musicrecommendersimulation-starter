@@ -62,6 +62,63 @@ PROFILES = {
         "preferred_language":  "English",
         "preferred_era":       "2026",
     },
+
+    # ─── EDGE CASE PROFILES (for adversarial testing) ───────────────────────────
+
+    "conflicting_preferences": {
+        "favorite_genre":      "ambient",
+        "favorite_mood":       "sad",
+        "target_energy":       0.90,   # CONFLICT: high energy but sad mood
+        "target_valence":      0.20,   # very sad/dark (contradicts ambient genre)
+        "target_danceability": 0.85,   # high danceability but wants sad/dark ambient
+        "target_acousticness": 0.80,   # acoustic + ambient + high energy = unusual combo
+        "preferred_language":  "English",
+        "preferred_era":       "2026",
+    },
+
+    "niche_acoustic_fast": {
+        "favorite_genre":      "folk",
+        "favorite_mood":       "peaceful",
+        "target_energy":       0.85,   # peaceful folk usually low energy - testing contradiction
+        "target_valence":      0.72,   # slightly happy
+        "target_danceability": 0.45,   # not very danceable
+        "target_acousticness": 0.95,   # very acoustic (extreme)
+        "preferred_language":  "Spanish",
+        "preferred_era":       "2010-20",
+    },
+
+    "extreme_electronics": {
+        "favorite_genre":      "electronic",
+        "favorite_mood":       "euphoric",
+        "target_energy":       0.98,   # near maximum energy
+        "target_valence":      0.95,   # maximum happiness
+        "target_danceability": 0.99,   # maximum danceability
+        "target_acousticness": 0.02,   # nearly zero acoustic (pure electronic)
+        "preferred_language":  "English",
+        "preferred_era":       "2026",
+    },
+
+    "obscure_language_niche": {
+        "favorite_genre":      "classical",
+        "favorite_mood":       "meditative",
+        "target_energy":       0.30,   # very low
+        "target_valence":      0.65,   # slightly positive
+        "target_danceability": 0.35,   # not danceable
+        "target_acousticness": 0.95,   # very acoustic
+        "preferred_language":  "Hindi",  # tests non-English, non-Nepali
+        "preferred_era":       "2025",
+    },
+
+    "high_energy_sad": {
+        "favorite_genre":      "hiphop",
+        "favorite_mood":       "intense",
+        "target_energy":       0.95,   # extremely high energy
+        "target_valence":      0.25,   # very sad/dark despite high energy
+        "target_danceability": 0.80,   # danceable but dark
+        "target_acousticness": 0.05,   # very electronic
+        "preferred_language":  "English",
+        "preferred_era":       "2025",
+    },
 }
 
 
