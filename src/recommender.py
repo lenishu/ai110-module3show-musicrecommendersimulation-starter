@@ -151,14 +151,14 @@ def load_songs(csv_path: str) -> List[Dict]:
                 }
                 songs.append(song)
 
-        print(f"✓ Loaded {len(songs)} songs")
+        print(f"[OK] Loaded {len(songs)} songs")
         return songs
 
     except FileNotFoundError:
-        print(f"✗ Error: Could not find file {csv_path}")
+        print(f"[ERROR] Could not find file {csv_path}")
         return []
     except Exception as e:
-        print(f"✗ Error loading songs: {e}")
+        print(f"[ERROR] {e}")
         return []
 
 def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
@@ -180,36 +180,36 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
     # Language match (exact)
     if song["language"].lower() == user_prefs["preferred_language"].lower():
         score += 3.0
-        reasons.append(f"✓ Language match ({song['language']})")
+        reasons.append(f"[MATCH] Language ({song['language']})")
     else:
         score -= 0.5  # Small penalty for language mismatch
-        reasons.append(f"✗ Language mismatch (song: {song['language']}, prefer: {user_prefs['preferred_language']})")
+        reasons.append(f"[MISMATCH] Language (song: {song['language']}, prefer: {user_prefs['preferred_language']})")
 
     # Era match (exact)
     if song["era"] == user_prefs["preferred_era"]:
         score += 3.0
-        reasons.append(f"✓ Era match ({song['era']})")
+        reasons.append(f"[MATCH] Era ({song['era']})")
     else:
         score -= 0.3  # Small penalty for era mismatch
-        reasons.append(f"✗ Era mismatch (song: {song['era']}, prefer: {user_prefs['preferred_era']})")
+        reasons.append(f"[MISMATCH] Era (song: {song['era']}, prefer: {user_prefs['preferred_era']})")
 
     # CATEGORICAL PREFERENCES - Medium weight
 
     # Genre match
     if song["genre"].lower() == user_prefs["favorite_genre"].lower():
         score += 2.5
-        reasons.append(f"✓ Genre match ({song['genre']})")
+        reasons.append(f"[MATCH] Genre ({song['genre']})")
     else:
         score -= 0.2
-        reasons.append(f"✗ Genre mismatch")
+        reasons.append(f"[MISMATCH] Genre")
 
     # Mood match
     if song["mood"].lower() == user_prefs["favorite_mood"].lower():
         score += 2.0
-        reasons.append(f"✓ Mood match ({song['mood']})")
+        reasons.append(f"[MATCH] Mood ({song['mood']})")
     else:
         score -= 0.1
-        reasons.append(f"✗ Mood mismatch")
+        reasons.append(f"[MISMATCH] Mood")
 
     # NUMERICAL FEATURES - Distance-based scoring (closer to target = higher score)
     # Scoring formula: 1 - |feature_value - target_value| = reward for proximity
@@ -218,25 +218,25 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
     energy_distance = abs(song["energy"] - user_prefs["target_energy"])
     energy_score = max(0, 2.0 * (1 - energy_distance))  # max 2.0 points
     score += energy_score
-    reasons.append(f"Energy: {song['energy']:.2f} (target: {user_prefs['target_energy']:.2f}) → +{energy_score:.2f}")
+    reasons.append(f"Energy: {song['energy']:.2f} (target: {user_prefs['target_energy']:.2f}) => +{energy_score:.2f}")
 
     # Valence (emotional tone)
     valence_distance = abs(song["valence"] - user_prefs["target_valence"])
     valence_score = max(0, 1.5 * (1 - valence_distance))  # max 1.5 points
     score += valence_score
-    reasons.append(f"Valence: {song['valence']:.2f} (target: {user_prefs['target_valence']:.2f}) → +{valence_score:.2f}")
+    reasons.append(f"Valence: {song['valence']:.2f} (target: {user_prefs['target_valence']:.2f}) => +{valence_score:.2f}")
 
     # Danceability (optional vibe)
     danceability_distance = abs(song["danceability"] - user_prefs["target_danceability"])
     danceability_score = max(0, 1.0 * (1 - danceability_distance))  # max 1.0 points
     score += danceability_score
-    reasons.append(f"Danceability: {song['danceability']:.2f} (target: {user_prefs['target_danceability']:.2f}) → +{danceability_score:.2f}")
+    reasons.append(f"Danceability: {song['danceability']:.2f} (target: {user_prefs['target_danceability']:.2f}) => +{danceability_score:.2f}")
 
     # Acousticness (texture preference)
     acousticness_distance = abs(song["acousticness"] - user_prefs["target_acousticness"])
     acousticness_score = max(0, 1.0 * (1 - acousticness_distance))  # max 1.0 points
     score += acousticness_score
-    reasons.append(f"Acousticness: {song['acousticness']:.2f} (target: {user_prefs['target_acousticness']:.2f}) → +{acousticness_score:.2f}")
+    reasons.append(f"Acousticness: {song['acousticness']:.2f} (target: {user_prefs['target_acousticness']:.2f}) => +{acousticness_score:.2f}")
 
     return (score, reasons)
 

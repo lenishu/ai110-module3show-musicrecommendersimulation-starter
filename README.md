@@ -11,7 +11,7 @@ Your goal is to:
 - Evaluate what your system gets right and wrong
 - Reflect on how this mirrors real world AI recommenders
 
-Replace this paragraph with your own summary of what your version does.
+This system recommends songs based on an explicit user "taste profile" — a dictionary containing the user's preferred genre, mood, language, era, and target values for numeric features (energy, valence, danceability, acousticness). For each song, the system scores how well it matches the user's preferences using a weighted combination: exact matches on language and era score highest (+3.0 each), categorical matches on genre and mood score medium (+2.5 and +2.0), and numeric features reward closeness to the user's target values using distance-based scoring. The system then ranks all 60 songs by score and returns the top k results, along with a detailed explanation of why each song was recommended. This transparency lets users understand the recommender's logic at a glance.
 
 ---
 
@@ -19,7 +19,10 @@ Replace this paragraph with your own summary of what your version does.
 
 Real-world recommendation systems like Spotify or YouTube work by building a model of your taste from your listening history, then finding content that is mathematically similar — either by comparing it to songs you liked (content-based filtering) or by finding other users with similar tastes (collaborative filtering). These systems work on millions of songs and factor in signals like skip rates, repeat plays, and time of day. This version is a simplified, transparent simulation of the content-based approach: it has no listening history, so instead it uses an explicit user profile (preferred genre, mood, and energy level) and scores each song by how closely it matches those stated preferences. The result is a small but readable system where every recommendation can be explained in plain language — which real systems often cannot do.
 
-My system would priorites what era and language the user prefer, and then based on the user inbut about other feature, it will provide the weight (most of the features such as acousticness and danceability are hard to quantify so given less weight where as genre, era and language are easy to quantify and are given higher weight)
+**Weighting Philosophy:**
+The system treats features in two tiers:
+- **Hard constraints (exact match required):** Language and era are categorical preferences that users explicitly state. These score +3.0 on match because they represent strong, unambiguous preferences.
+- **Soft preferences (distance-based):** Genre and mood are categorical but allow slight flexibility; numeric features (energy, valence, danceability, acousticness) reward proximity to the user's target value. This reflects the reality that users care more about "how close" a song's energy is to their preference, not whether it's exactly equal.
 
 ### Design Details
 
@@ -34,10 +37,26 @@ My system would priorites what era and language the user prefer, and then based 
 - Boolean: `likes_acoustic`
 
 **Scoring Strategy:**
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
 
-You can include a simple diagram or bullet list if helpful.
+The `score_song(user_prefs, song)` function computes a total score by summing weighted components:
+
+| Feature | Type | Weight | Logic |
+|---------|------|--------|-------|
+| Language | Exact Match | +3.0 / -0.5 | Full credit if match, small penalty if mismatch |
+| Era | Exact Match | +3.0 / -0.3 | Full credit if match, small penalty if mismatch |
+| Genre | Categorical | +2.5 / -0.2 | Full credit if match, small penalty if mismatch |
+| Mood | Categorical | +2.0 / -0.1 | Full credit if match, small penalty if mismatch |
+| Energy | Distance-based | max +2.0 | `2.0 × (1 - |song_value - target_value|)` |
+| Valence | Distance-based | max +1.5 | `1.5 × (1 - |song_value - target_value|)` |
+| Danceability | Distance-based | max +1.0 | `1.0 × (1 - |song_value - target_value|)` |
+| Acousticness | Distance-based | max +1.0 | `1.0 × (1 - |song_value - target_value|)` |
+
+**Maximum possible score:** 17.5 points
+
+The `recommend_songs(user_prefs, songs, k)` function:
+1. Loops through all songs and calls `score_song()` on each
+2. Sorts the scored songs by score (highest first)
+3. Returns the top k results as `(song, score, explanation)` tuples, where `explanation` lists the scoring breakdown
 
 ---
 
@@ -73,6 +92,118 @@ pytest
 ```
 
 You can add more tests in `tests/test_recommender.py`.
+
+---
+
+## Example Output
+
+Running `python -m src.main` generates recommendations for four distinct taste profiles. Here's a sample:
+
+### Profile: chill_lofi
+**User Preferences:** lofi genre, chill mood, low energy (0.40), high acousticness (0.75), English, 2020-25 era
+
+**Top Recommendation:**
+```
+#1  Midnight Coding
+     Artist: LoRoom | Genre: lofi | Era: 2020-25
+     Score: 15.87/17.5 (90.7%)
+
+     Why recommended:
+       • [MATCH] Language (English)
+       • [MATCH] Era (2020-25)
+       • [MATCH] Genre (lofi)
+       • [MATCH] Mood (chill)
+       • Energy: 0.42 (target: 0.40) => +1.96
+       • Valence: 0.56 (target: 0.58) => +1.47
+       • Danceability: 0.62 (target: 0.60) => +0.98
+       • Acousticness: 0.71 (target: 0.75) => +0.96
+```![alt text](image.png)
+
+**Analysis:** All four categorical matches (language, era, genre, mood) are hit, and all numeric features are very close to targets. This is a near-perfect recommendation.
+
+---
+
+### Profile: intense_rock
+**User Preferences:** rock genre, intense mood, high energy (0.92), low acousticness (0.10), English, 2010-20 era
+
+**Top Recommendation:**
+```
+#1  Storm Runner
+     Artist: Voltline | Genre: rock | Era: 2010-20
+     Score: 15.93/17.5 (91.0%)
+
+     Why recommended:
+       • [MATCH] Language (English)
+       • [MATCH] Era (2010-20)
+       • [MATCH] Genre (rock)
+       • [MATCH] Mood (intense)
+       • Energy: 0.91 (target: 0.92) => +1.98
+       • Valence: 0.48 (target: 0.45) => +1.46
+       • Danceability: 0.66 (target: 0.65) => +0.99
+       • Acousticness: 0.10 (target: 0.10) => +1.00
+```
+
+**Analysis:** Perfect categorical match + all numeric features nearly identical. The system correctly identifies this as an excellent fit for someone seeking high-energy rock.
+
+**Comparison with chill_lofi's runner-up:**
+Spacewalk Thoughts (ambient, score 12.60) is ranked much lower because it lacks the rock genre match and has too-low energy for intense_rock users. This demonstrates the system successfully differentiates between very different music tastes.
+
+---
+
+### Profile: nepali_pop_happy
+**User Preferences:** pop genre, happy mood, Nepali language, 2026 era
+
+**Top 3 All Score ~15.9 (perfect matches):**
+1. Mera Nepalko Haat — Sajjan Raj Vaidya (15.93)
+2. Rachana Dhun — Rachana Rimal (15.88)
+3. Trishna Ko Sapna — Trishna Gurung (15.86)
+
+**Analysis:** All three recommendations hit all four categorical matches and have nearly identical numeric features. This is expected—the system correctly groups similar songs together.
+
+---
+
+### Profile: romantic_rnb
+**User Preferences:** rnb genre, romantic mood, moderate energy (0.70), English, 2026 era
+
+**Top Recommendation:**
+```
+#1  Heartbeat
+     Artist: Love Songs | Genre: rnb | Era: 2026
+     Score: 15.95/17.5 (91.1%)
+
+     All four categorical matches + perfect numeric alignment
+```
+
+**Second Recommendation (for comparison):**
+```
+#2  Midnight Vibes
+     Artist: The Weeknd | Genre: rnb | Era: 2026
+     Score: 13.26/17.5 (75.8%)
+
+     Why scored lower:
+       • [MISMATCH] Mood (song is "moody", target is "romantic") => -0.1
+       • Valence: 0.52 (target: 0.80) => +1.08 (low happiness hurts the score)
+```
+
+**Analysis:** Even though both are rnb songs from 2026, the mood mismatch (moody vs romantic) and lower valence (0.52 vs 0.80) significantly lower the second recommendation's score. This shows how the system captures subtle emotional differences.
+
+---
+
+## Does the System Differentiate Between "Intense Rock" and "Chill Lofi"?
+
+**Yes, definitively.**
+
+| Dimension | chill_lofi | intense_rock | Gap |
+|-----------|-----------|-------------|-----|
+| Energy | 0.40 | 0.92 | 0.52 |
+| Acousticness | 0.75 | 0.10 | 0.65 |
+| Genre | lofi | rock | mismatch |
+| Mood | chill | intense | mismatch |
+
+**Chill Lofi's Top Result:** Midnight Coding (lofi, 0.40 energy, 0.71 acousticness)
+**Intense Rock's Top Result:** Storm Runner (rock, 0.91 energy, 0.10 acousticness)
+
+These are from completely different regions of the feature space. A chill_lofi user would never see Storm Runner in their recommendations, and vice versa. The large numeric gaps (energy 0.52, acousticness 0.65) combined with categorical mismatches (lofi ≠ rock, chill ≠ intense) ensure complete separation.
 
 ---
 
