@@ -17,13 +17,23 @@ Replace this paragraph with your own summary of what your version does.
 
 ## How The System Works
 
-Explain your design in plain language.
+Real-world recommendation systems like Spotify or YouTube work by building a model of your taste from your listening history, then finding content that is mathematically similar — either by comparing it to songs you liked (content-based filtering) or by finding other users with similar tastes (collaborative filtering). These systems work on millions of songs and factor in signals like skip rates, repeat plays, and time of day. This version is a simplified, transparent simulation of the content-based approach: it has no listening history, so instead it uses an explicit user profile (preferred genre, mood, and energy level) and scores each song by how closely it matches those stated preferences. The result is a small but readable system where every recommendation can be explained in plain language — which real systems often cannot do.
 
-Some prompts to answer:
+My system would priorites what era and language the user prefer, and then based on the user inbut about other feature, it will provide the weight (most of the features such as acousticness and danceability are hard to quantify so given less weight where as genre, era and language are easy to quantify and are given higher weight)
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
+### Design Details
+
+**Song Features:**
+- Categorical: `genre`, `mood`, `language`, `era`
+- Numeric (0-1): `energy`, `valence`, `danceability`, `acousticness`, `instrumentalness`
+- Other: `tempo_bpm`, `title`, `artist`
+
+**User Profile Preferences:**
+- Categorical: `favorite_genre`, `favorite_mood`, `preferred_language`, `preferred_era`
+- Numeric targets: `target_energy`, `target_valence`, `target_danceability`, `target_acousticness`
+- Boolean: `likes_acoustic`
+
+**Scoring Strategy:**
 - How does your `Recommender` compute a score for each song
 - How do you choose which songs to recommend
 

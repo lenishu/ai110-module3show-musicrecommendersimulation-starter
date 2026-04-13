@@ -1,11 +1,61 @@
-id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness
-1,Sunrise City,Neon Echo,pop,happy,0.82,118,0.84,0.79,0.18
-2,Midnight Coding,LoRoom,lofi,chill,0.42,78,0.56,0.62,0.71
-3,Storm Runner,Voltline,rock,intense,0.91,152,0.48,0.66,0.10
-4,Library Rain,Paper Lanterns,lofi,chill,0.35,72,0.60,0.58,0.86
-5,Gym Hero,Max Pulse,pop,intense,0.93,132,0.77,0.88,0.05
-6,Spacewalk Thoughts,Orbit Bloom,ambient,chill,0.28,60,0.65,0.41,0.92
-7,Coffee Shop Stories,Slow Stereo,jazz,relaxed,0.37,90,0.71,0.54,0.89
-8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22
-9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78
-10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35
+id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness,instrumentalness,language,era
+1,Sunrise City,Neon Echo,pop,happy,0.82,118,0.84,0.79,0.18,0.12,English,2020-25
+2,Midnight Coding,LoRoom,lofi,chill,0.42,78,0.56,0.62,0.71,0.68,English,2020-25
+3,Storm Runner,Voltline,rock,intense,0.91,152,0.48,0.66,0.10,0.05,English,2010-20
+4,Library Rain,Paper Lanterns,lofi,chill,0.35,72,0.60,0.58,0.86,0.85,Nepali,2020-25
+5,Gym Hero,Max Pulse,pop,intense,0.93,132,0.77,0.88,0.05,0.02,English,2026
+6,Spacewalk Thoughts,Orbit Bloom,ambient,chill,0.28,60,0.65,0.41,0.92,0.91,English,2020-25
+7,Coffee Shop Stories,Slow Stereo,jazz,relaxed,0.37,90,0.71,0.54,0.89,0.45,Spanish,2010-20
+8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22,0.35,English,2020-25
+9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78,0.72,Hindi,2020-25
+10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35,0.10,English,2010-20
+11,I Just Might,Bruno Mars,pop,happy,0.88,120,0.85,0.82,0.15,0.08,English,2026
+12,Opalite,Taylor Swift,pop,happy,0.85,115,0.82,0.78,0.22,0.05,English,2026
+13,Swim,BTS,kpop,energetic,0.89,128,0.79,0.85,0.12,0.15,Korean,2026
+14,Midnight Vibes,The Weeknd,rnb,moody,0.72,105,0.52,0.71,0.18,0.22,English,2026
+15,Anxiety,Doechii,hiphop,intense,0.84,112,0.48,0.72,0.08,0.12,English,2025
+16,Somebody,Latto,hiphop,confident,0.86,118,0.75,0.79,0.10,0.08,English,2025
+17,Neon Dreams,Doja Cat,pop,playful,0.79,110,0.83,0.81,0.14,0.10,English,2026
+18,Echoes,SZA,rnb,emotional,0.68,95,0.58,0.65,0.28,0.18,English,2025
+19,Electric Soul,Kendrick,hiphop,confident,0.81,108,0.62,0.74,0.12,0.15,English,2025
+20,Starlight,Lady Gaga,pop,happy,0.86,122,0.87,0.84,0.16,0.06,English,2026
+21,Sunset Dream,Indie Bloom,indie,relaxed,0.65,98,0.72,0.58,0.45,0.20,English,2020-25
+22,Winter Walk,Acoustic Days,acoustic,peaceful,0.45,75,0.68,0.48,0.88,0.75,English,2020-25
+23,Monsoon Rain,Monsoon Vibes,world,contemplative,0.52,85,0.62,0.55,0.65,0.35,Hindi,2025
+24,Baila Fuego,Latin Nights,latin,energetic,0.87,125,0.84,0.89,0.18,0.12,Spanish,2026
+25,Disco Fever,Retro Pulse,disco,happy,0.88,130,0.86,0.92,0.10,0.08,English,2020-25
+26,Metal Storm,Thunder Road,metal,intense,0.94,155,0.35,0.62,0.05,0.15,English,2026
+27,Urban Jungle,City Beats,trap,aggressive,0.85,95,0.45,0.76,0.08,0.18,English,2026
+28,Ethereal Path,Dream Walkers,ambient,serene,0.32,65,0.71,0.38,0.92,0.88,English,2020-25
+29,Pulse,Electronic Minds,electronic,euphoric,0.91,128,0.81,0.87,0.12,0.45,English,2025
+30,Slow Motion,Smooth Jazz,jazz,relaxed,0.48,88,0.69,0.51,0.84,0.55,English,2020-25
+31,Summer Days,Pop Stars,pop,cheerful,0.84,120,0.88,0.81,0.20,0.10,English,2026
+32,Dark Nights,Gothic Souls,dark pop,melancholic,0.70,100,0.40,0.68,0.20,0.12,English,2025
+33,Ocean Waves,Coastal Vibes,reggae,laid back,0.62,95,0.77,0.72,0.35,0.25,English,2020-25
+34,Heartbeat,Love Songs,rnb,romantic,0.71,108,0.81,0.69,0.32,0.20,English,2026
+35,Warrior,Epic Games,rock,intense,0.92,148,0.58,0.64,0.15,0.10,English,2026
+36,Gentle Breeze,Soft Melodies,acoustic,calm,0.38,70,0.75,0.45,0.90,0.80,English,2020-25
+37,City Lights,Urban Voices,urban pop,upbeat,0.82,115,0.79,0.77,0.25,0.15,English,2026
+38,Raag Nights,Classical India,classical,meditative,0.35,75,0.68,0.40,0.88,0.92,Hindi,2025
+39,Bossa Nova,Brazilian Soul,bossa nova,smooth,0.66,100,0.79,0.73,0.72,0.35,Portuguese,2020-25
+40,Trance Zone,Synth Masters,trance,hypnotic,0.88,138,0.72,0.82,0.10,0.52,English,2026
+41,Groovy Beats,Funk Masters,funk,happy,0.80,112,0.83,0.85,0.22,0.20,English,2025
+42,Moonlight,Night Owls,synthwave,moody,0.73,105,0.51,0.70,0.24,0.40,English,2026
+43,Acoustic Sunrise,Solo Artist,folk,peaceful,0.50,78,0.76,0.52,0.88,0.78,English,2020-25
+44,Street Vibes,Hip Hop Kings,hiphop,confident,0.83,110,0.68,0.78,0.15,0.18,English,2026
+45,Dance All Night,Club Hits,edm,euphoric,0.92,135,0.84,0.91,0.10,0.35,English,2026
+46,Soulful Journey,Soul Train,soul,emotional,0.72,100,0.74,0.68,0.35,0.28,English,2025
+47,Bollywood Dreams,Bollywood Stars,bollywood,happy,0.85,120,0.87,0.84,0.22,0.15,Hindi,2026
+48,Flamenco Passion,Spanish Dancers,flamenco,intense,0.79,105,0.65,0.72,0.55,0.25,Spanish,2025
+49,Cyberpunk,Digital Future,electronic,futuristic,0.89,130,0.68,0.83,0.08,0.58,English,2026
+50,Timeless Love,Eternal Voices,rnb,romantic,0.70,105,0.82,0.67,0.38,0.22,English,2025
+51,Mera Nepalko Haat,Sajjan Raj Vaidya,pop,happy,0.84,115,0.85,0.80,0.25,0.10,Nepali,2026
+52,Sushant Raat,Sushant KC,pop,romantic,0.72,105,0.78,0.72,0.35,0.15,Nepali,2026
+53,Yabesh Geet,Yabesh Thapa,indie,emotional,0.68,95,0.62,0.65,0.42,0.18,Nepali,2025
+54,Trishna Ko Sapna,Trishna Gurung,pop,happy,0.86,120,0.84,0.82,0.22,0.12,Nepali,2026
+55,Swoopna Swar,Swoopna Suman,indie pop,relaxed,0.70,100,0.75,0.70,0.48,0.20,Nepali,2025
+56,Nepali Raat,Anju Panta,folk,peaceful,0.48,80,0.73,0.55,0.80,0.35,Nepali,2025
+57,Maili Geet,Ankita Pun,pop,upbeat,0.82,118,0.81,0.78,0.28,0.12,Nepali,2026
+58,Himalayan Echo,Prabesh Kumar,world fusion,contemplative,0.55,88,0.68,0.58,0.65,0.40,Nepali,2026
+59,Asmita Awaaz,Asmita Adhikari,pop,romantic,0.76,110,0.80,0.74,0.32,0.14,Nepali,2025
+60,Rachana Dhun,Rachana Rimal,pop,happy,0.85,122,0.86,0.81,0.25,0.11,Nepali,2026
